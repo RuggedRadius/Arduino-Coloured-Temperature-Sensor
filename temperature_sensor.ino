@@ -12,6 +12,7 @@ dht DHT;
 #define pinGreen 11
 #define pinBlue 10
 #define sensor A2
+#define buzzer 5
 
 // USER SETTINGS
 const int rangeMin = 0;
@@ -31,6 +32,11 @@ void setup() {
   Serial.println("\t\t\t****************************************************************\n");
   Serial.println("\tHUMIDITY (%)\t\tTEMPERATURE (℃)\t\t\tCOLOUR VALUES (R, G, B)");
   Serial.println("\t************\t\t****************\t\t************************\n");
+
+  // Startup tone
+  Arpeggio(5, 500, 100, 2000, 100);
+
+  // Delay before accessing sensors
   delay(1000);
 }
 
@@ -57,11 +63,6 @@ void loop() {
 //  }
 ////  **************************************
 }
-
-
-
-
-
 
 float Amt (float temperature) {  
   float range = rangeMax - rangeMin;
@@ -124,4 +125,13 @@ void PrintCurrentColourValues(float amt) {
   Serial.print(0);
   Serial.print(",\t");
   Serial.println(255 - (amt * 255));
+}
+
+void Arpeggio(int notes, int interval, int timing, int initial, int del)
+{
+  for (int i = 0; i < notes; i++)
+  {
+    tone(buzzer, (initial + (interval * i)), timing);
+    delay(del);
+  }
 }
